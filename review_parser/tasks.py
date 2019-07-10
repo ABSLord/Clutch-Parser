@@ -1,12 +1,8 @@
 from clutch_parser.celery import app
-from review_parser.models import Reviews
+from review_parser.core.review_parser import review_parser
 
 
 @app.task
-def parse_review_task(self, review_id):
+def parse_review_task(countries, review_id):
     """Main task. """
-
-    review = Reviews.objects.get(pk=review_id)
-    review.task_id = self.request.id
-    review.save()
-    # TODO do parse here
+    review_parser(countries, review_id)

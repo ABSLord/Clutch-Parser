@@ -1,4 +1,5 @@
 from django.db import models
+from review_parser.tasks import parse_review_task
 
 
 STATUSES = (
@@ -9,7 +10,7 @@ STATUSES = (
 )
 
 
-class Reviews(models.Model):
+class Review(models.Model):
     """Class implementing the Upwork request model. """
 
     status = models.CharField(
@@ -19,4 +20,11 @@ class Reviews(models.Model):
     )
     task_id = models.CharField(max_length=100, blank=True, null=True)
     file_name = models.CharField(max_length=100)
-    file = models.FileField()
+    file = models.FileField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if not self.file:
+            parse_review_task.delay(("ru", "ua", "by"), self.pk)
+
+

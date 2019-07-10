@@ -1,9 +1,8 @@
 from django.contrib import admin
-from review_parser.models import Reviews
+from review_parser.models import Review
 
 
-@admin.register(Reviews)
-class RequestAdmin(admin.ModelAdmin):
-    """Class setting the rendering of the change and list view for admin interface. """
+@admin.register(Review)
+class ReviewsAdmin(admin.ModelAdmin):
 
-    exclude = ('task_id', )
+    exclude = ('task_id', 'status')
