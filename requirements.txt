@@ -1,4 +1,4 @@
 django>=2.1.10
-celery==4.3
+celery==5.2.2
 requests==2.22.0
 beautifulsoup4==4.7.1
